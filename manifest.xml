@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TaskPaneApp">
+  <Id>12345678-abcd-1234-abcd-123456789abc</Id>
+  <Version>1.0</Version>
+  <ProviderName>MyCompany</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName>Word Wallpaper Add-In</DisplayName>
+  <Description>Choose and set wallpapers from Unsplash</Description>
+  <IconUrl>https://localhost:3000/icon.png</IconUrl>
+  <Capabilities>
+    <Capability Name="Document"/>
+  </Capabilities>
+  <DefaultSettings>
+    <SourceLocation DefaultValue="http://localhost:3000"/>
+  </DefaultSettings>
+  <Permissions>ReadWriteDocument</Permissions>
+</OfficeApp>
