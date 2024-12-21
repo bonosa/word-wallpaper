@@ -12,7 +12,7 @@
     <Capability Name="Document"/>
   </Capabilities>
   <DefaultSettings>
-    <SourceLocation DefaultValue="http://localhost:3000"/>
+    <SourceLocation DefaultValue="https://word-wallpaper.vercel.app/"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 </OfficeApp>

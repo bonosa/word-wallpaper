@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             img.alt = photo.description || 'Unsplash Image';
             img.style.cursor = 'pointer';
 
-            // Add click event to set wallpaper
-            img.addEventListener('click', () => setWallpaper(photo));
+            // Add click event to set wallpaper as background/header/footer
+            img.addEventListener('click', () => displayOptions(photo));
             galleryDiv.appendChild(img);
 
             // Add attribution
@@ -57,21 +57,74 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Trigger Unsplash download and set as wallpaper
-    async function setWallpaper(photo) {
+    // Display options for background/header/footer
+    function displayOptions(photo) {
+        const option = prompt(
+            "Choose where to insert the image:\n1. Background\n2. Header\n3. Footer",
+            "1"
+        );
+        if (option === "1") {
+            setDocumentBackground(photo);
+        } else if (option === "2") {
+            setHeaderImage(photo);
+        } else if (option === "3") {
+            setFooterImage(photo);
+        } else {
+            alert("Invalid option selected.");
+        }
+    }
+
+    // Set image as document background
+    async function setDocumentBackground(photo) {
         try {
-            statusDiv.textContent = 'Applying wallpaper...';
+            await Word.run(async (context) => {
+                const sections = context.document.sections;
+                sections.load("items");
+                await context.sync();
 
-            await fetch('/api/download-image', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ downloadUrl: photo.links.download_location }),
+                const body = sections.items[0].body;
+                body.insertInlinePictureFromBase64(photo.urls.regular, Word.InsertLocation.replace);
+                await context.sync();
             });
-
-            statusDiv.textContent = 'Wallpaper applied successfully!';
+            alert("Image set as document background!");
         } catch (error) {
-            console.error("Error applying wallpaper:", error);
-            statusDiv.textContent = 'Failed to apply wallpaper';
+            console.error("Error setting background:", error);
+        }
+    }
+
+    // Set image in the header
+    async function setHeaderImage(photo) {
+        try {
+            await Word.run(async (context) => {
+                const sections = context.document.sections;
+                sections.load("items");
+                await context.sync();
+
+                const header = sections.items[0].getHeader("primary");
+                header.insertInlinePictureFromBase64(photo.urls.regular, Word.InsertLocation.replace);
+                await context.sync();
+            });
+            alert("Image set in the header!");
+        } catch (error) {
+            console.error("Error setting header image:", error);
+        }
+    }
+
+    // Set image in the footer
+    async function setFooterImage(photo) {
+        try {
+            await Word.run(async (context) => {
+                const sections = context.document.sections;
+                sections.load("items");
+                await context.sync();
+
+                const footer = sections.items[0].getFooter("primary");
+                footer.insertInlinePictureFromBase64(photo.urls.regular, Word.InsertLocation.replace);
+                await context.sync();
+            });
+            alert("Image set in the footer!");
+        } catch (error) {
+            console.error("Error setting footer image:", error);
         }
     }
 
