@@ -3,12 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Wallpaper Add-In</title>
-    <script src="taskpane.js"></script>
+    <title>Word Add-In</title>
+    <!-- Load the Office JavaScript API -->
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script src="taskpane.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #wallpaper-gallery img {
+            cursor: pointer;
+            margin: 10px;
+            width: 150px;
+        }
+        #options {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <h2>Choose Your Wallpaper</h2>
     <div id="wallpaper-gallery"></div>
     <div id="status"></div>
+    <div id="options">
+        <button id="set-background">Set as Background</button>
+        <button id="set-header">Set in Header</button>
+        <button id="set-footer">Set in Footer</button>
+    </div>
 </body>
 </html>
