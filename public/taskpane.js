@@ -1,3 +1,4 @@
+// Ensure Office.js is ready before running
 Office.onReady(() => {
     console.log("Office.js is ready.");
 
@@ -10,16 +11,17 @@ Office.onReady(() => {
         let selectedPhoto = null;
 
         // Check for required DOM elements
-        if (!galleryDiv || !statusDiv) {
+        if (!galleryDiv || !statusDiv || !optionsDiv) {
             console.error("Required DOM elements not found!");
             return;
         }
 
-        console.log("Both DOM elements found. Proceeding...");
+        console.log("All required DOM elements found. Proceeding...");
 
         // Fetch wallpapers from Unsplash
         async function fetchWallpapers() {
             try {
+                console.log("Fetching wallpapers from Unsplash...");
                 const response = await fetch(
                     `https://api.unsplash.com/photos?per_page=10&client_id=4b2pM-iD5Ltty5GOtVnOs7KDOUopxaTdijfXaDHhXcY`
                 );
@@ -72,10 +74,14 @@ Office.onReady(() => {
                 alert("No image selected.");
                 return;
             }
+            console.log("Selected photo for background:", selectedPhoto);
+
             try {
                 const base64Image = await fetchImageAsBase64(selectedPhoto.urls.regular);
+                console.log("Base64 Image:", base64Image);
 
                 await Word.run(async (context) => {
+                    console.log("Running Word API to insert background...");
                     const sections = context.document.sections;
                     sections.load("items");
                     await context.sync();
@@ -86,8 +92,8 @@ Office.onReady(() => {
                         Word.InsertLocation.replace
                     );
                     await context.sync();
+                    console.log("Background set successfully!");
                 });
-                alert("Image set as document background!");
             } catch (error) {
                 console.error("Error setting background:", error);
             }
@@ -99,10 +105,13 @@ Office.onReady(() => {
                 alert("No image selected.");
                 return;
             }
+            console.log("Selected photo for header:", selectedPhoto);
+
             try {
                 const base64Image = await fetchImageAsBase64(selectedPhoto.urls.regular);
 
                 await Word.run(async (context) => {
+                    console.log("Running Word API to insert header...");
                     const sections = context.document.sections;
                     sections.load("items");
                     await context.sync();
@@ -113,8 +122,8 @@ Office.onReady(() => {
                         Word.InsertLocation.replace
                     );
                     await context.sync();
+                    console.log("Header image set successfully!");
                 });
-                alert("Image set in the header!");
             } catch (error) {
                 console.error("Error setting header image:", error);
             }
@@ -126,10 +135,13 @@ Office.onReady(() => {
                 alert("No image selected.");
                 return;
             }
+            console.log("Selected photo for footer:", selectedPhoto);
+
             try {
                 const base64Image = await fetchImageAsBase64(selectedPhoto.urls.regular);
 
                 await Word.run(async (context) => {
+                    console.log("Running Word API to insert footer...");
                     const sections = context.document.sections;
                     sections.load("items");
                     await context.sync();
@@ -140,8 +152,8 @@ Office.onReady(() => {
                         Word.InsertLocation.replace
                     );
                     await context.sync();
+                    console.log("Footer image set successfully!");
                 });
-                alert("Image set in the footer!");
             } catch (error) {
                 console.error("Error setting footer image:", error);
             }
@@ -149,28 +161,40 @@ Office.onReady(() => {
 
         // Fetch and convert image to Base64
         async function fetchImageAsBase64(imageUrl) {
-            const response = await fetch(imageUrl);
-            const blob = await response.blob();
+            console.log("Fetching image:", imageUrl);
 
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () =>
-                    resolve(reader.result.split(",")[1]); // Extract Base64
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-            });
+            try {
+                const response = await fetch(imageUrl);
+                console.log("Image fetched successfully:", response);
+
+                const blob = await response.blob();
+                console.log("Blob created from response:", blob);
+
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        console.log("Base64 Conversion Complete:", reader.result);
+                        resolve(reader.result.split(",")[1]); // Extract Base64
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+            } catch (error) {
+                console.error("Error fetching or converting image to Base64:", error);
+                return null;
+            }
         }
 
-        // Add event listeners for buttons
+        // Add event listeners for options
         document
             .getElementById("set-background")
-            .addEventListener("click", setDocumentBackground);
+            .addEventListener("click", () => setDocumentBackground());
         document
             .getElementById("set-header")
-            .addEventListener("click", setHeaderImage);
+            .addEventListener("click", () => setHeaderImage());
         document
             .getElementById("set-footer")
-            .addEventListener("click", setFooterImage);
+            .addEventListener("click", () => setFooterImage());
 
         // Load wallpapers and render gallery
         const photos = await fetchWallpapers();
