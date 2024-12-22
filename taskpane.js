@@ -17,30 +17,41 @@ Office.onReady(() => {
 
         console.log("All required DOM elements found. Proceeding...");
 
-        // Fetch wallpapers from Unsplash
-        async function fetchWallpapers() {
-            const cachedPhotos = localStorage.getItem("photos");
-            if (cachedPhotos) {
-                console.log("Using cached photos.");
-                return JSON.parse(cachedPhotos);
-            }
+        // Fetch wallpapers from Pexels
+async function fetchWallpapers() {
+    const apiKey = "tiHzZylNhvmXcYiLM2zNGmUXO5m1hfxGCD0zyg44r74XbXhi0govsIqM"; // Replace with your actual Pexels API Key
+    const url = "https://api.pexels.com/v1/curated?per_page=10";
 
-            try {
-                console.log("Fetching wallpapers from Unsplash...");
-                const response = await fetch(
-                    `https://api.unsplash.com/photos?per_page=10&client_id=4b2pM-iD5Ltty5GOtVnOs7KDOUopxaTdijfXaDHhXcY`
-                );
-                const photos = await response.json();
-                console.log("Unsplash API Response:", photos);
+    try {
+        console.log("Fetching wallpapers from Pexels...");
+        const response = await fetch(url, {
+            headers: {
+                Authorization: apiKey, // Pexels API requires this in the header
+            },
+        });
 
-                // Cache the response
-                localStorage.setItem("photos", JSON.stringify(photos));
-                return photos;
-            } catch (error) {
-                console.error("Error fetching wallpapers:", error);
-                return [];
-            }
-        }
+        const data = await response.json();
+        console.log("Pexels API Response:", data);
+
+        // Transform the response to match the existing format
+        const photos = data.photos.map((photo) => ({
+            urls: {
+                small: photo.src.small,
+                regular: photo.src.large,
+            },
+            description: photo.alt || "Pexels Image",
+            user: {
+                name: photo.photographer,
+                links: { html: photo.photographer_url },
+            },
+        }));
+
+        return photos;
+    } catch (error) {
+        console.error("Error fetching wallpapers from Pexels:", error);
+        return [];
+    }
+}
 
         // Render wallpapers in the gallery
         function renderGallery(photos) {
