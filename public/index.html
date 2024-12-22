@@ -4,46 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Add-In</title>
-    <!-- Load the Office JavaScript API -->
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
     <script src="taskpane.js" defer></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #wallpaper-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
         }
         #wallpaper-gallery img {
             cursor: pointer;
-            border: 2px solid transparent;
-            border-radius: 5px;
-            transition: transform 0.2s, border-color 0.2s;
+            margin: 10px;
             width: 150px;
-            height: auto;
-        }
-        #wallpaper-gallery img:hover {
-            transform: scale(1.05);
-            border-color: #0078d7;
-        }
-        #options {
-            margin-top: 20px;
-            display: none;
-        }
-        button {
-            background-color: #0078d7;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            padding: 10px 15px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #005a9e;
         }
     </style>
 </head>
@@ -51,10 +21,5 @@
     <h2>Choose Your Wallpaper</h2>
     <div id="wallpaper-gallery"></div>
     <div id="status"></div>
-    <div id="options">
-        <button id="set-background">Set as Background</button>
-        <button id="set-header">Set in Header</button>
-        <button id="set-footer">Set in Footer</button>
-    </div>
 </body>
 </html>
