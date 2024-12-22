@@ -67,9 +67,13 @@ Office.onReady(() => {
         }
 
         // Set image as document background
-        async function setDocumentBackground(photo) {
+        async function setDocumentBackground() {
+            if (!selectedPhoto) {
+                alert("No image selected.");
+                return;
+            }
             try {
-                const base64Image = await fetchImageAsBase64(photo.urls.regular);
+                const base64Image = await fetchImageAsBase64(selectedPhoto.urls.regular);
 
                 await Word.run(async (context) => {
                     const sections = context.document.sections;
@@ -90,9 +94,13 @@ Office.onReady(() => {
         }
 
         // Set image in the header
-        async function setHeaderImage(photo) {
+        async function setHeaderImage() {
+            if (!selectedPhoto) {
+                alert("No image selected.");
+                return;
+            }
             try {
-                const base64Image = await fetchImageAsBase64(photo.urls.regular);
+                const base64Image = await fetchImageAsBase64(selectedPhoto.urls.regular);
 
                 await Word.run(async (context) => {
                     const sections = context.document.sections;
@@ -113,9 +121,13 @@ Office.onReady(() => {
         }
 
         // Set image in the footer
-        async function setFooterImage(photo) {
+        async function setFooterImage() {
+            if (!selectedPhoto) {
+                alert("No image selected.");
+                return;
+            }
             try {
-                const base64Image = await fetchImageAsBase64(photo.urls.regular);
+                const base64Image = await fetchImageAsBase64(selectedPhoto.urls.regular);
 
                 await Word.run(async (context) => {
                     const sections = context.document.sections;
@@ -149,16 +161,16 @@ Office.onReady(() => {
             });
         }
 
-        // Add event listeners for options
+        // Add event listeners for buttons
         document
             .getElementById("set-background")
-            .addEventListener("click", () => setDocumentBackground(selectedPhoto));
+            .addEventListener("click", setDocumentBackground);
         document
             .getElementById("set-header")
-            .addEventListener("click", () => setHeaderImage(selectedPhoto));
+            .addEventListener("click", setHeaderImage);
         document
             .getElementById("set-footer")
-            .addEventListener("click", () => setFooterImage(selectedPhoto));
+            .addEventListener("click", setFooterImage);
 
         // Load wallpapers and render gallery
         const photos = await fetchWallpapers();
