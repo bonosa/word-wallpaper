@@ -1,4 +1,3 @@
-// Ensure Office.js is ready before running
 Office.onReady(() => {
     console.log("Office.js is ready.");
 
@@ -20,6 +19,12 @@ Office.onReady(() => {
 
         // Fetch wallpapers from Unsplash
         async function fetchWallpapers() {
+            const cachedPhotos = localStorage.getItem("photos");
+            if (cachedPhotos) {
+                console.log("Using cached photos.");
+                return JSON.parse(cachedPhotos);
+            }
+
             try {
                 console.log("Fetching wallpapers from Unsplash...");
                 const response = await fetch(
@@ -27,6 +32,9 @@ Office.onReady(() => {
                 );
                 const photos = await response.json();
                 console.log("Unsplash API Response:", photos);
+
+                // Cache the response
+                localStorage.setItem("photos", JSON.stringify(photos));
                 return photos;
             } catch (error) {
                 console.error("Error fetching wallpapers:", error);
@@ -46,7 +54,7 @@ Office.onReady(() => {
 
                 // Create image element
                 const img = document.createElement("img");
-                img.src = photo.urls.small;
+                img.src = photo.urls.small; // Use Unsplash image URL
                 img.alt = photo.description || "Unsplash Image";
                 img.style.cursor = "pointer";
 
