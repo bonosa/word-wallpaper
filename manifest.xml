@@ -7,7 +7,7 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName>Word Wallpaper Add-In</DisplayName>
   <Description>Choose and set wallpapers from Unsplash</Description>
-  <IconUrl>https://localhost:3000/icon.png</IconUrl>
+
   <Capabilities>
     <Capability Name="Document"/>
   </Capabilities>
