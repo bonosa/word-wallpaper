@@ -15,6 +15,9 @@
   <Capabilities>
     <Capability Name="Document"/>
   </Capabilities>
+  <AppDomains>
+  <AppDomain>https://api.pexels.com</AppDomain>
+</AppDomains>
   <DefaultSettings>
     <SourceLocation DefaultValue="https://word-wallpaper.vercel.app"/>
   </DefaultSettings>
