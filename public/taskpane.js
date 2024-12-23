@@ -17,7 +17,7 @@ Office.onReady(() => {
 
         // Fetch images from Pexels API
         async function fetchWallpapers() {
-            const apiKey = "YOUR_PEXELS_API_KEY"; // Replace with your Pexels API key
+            const apiKey = "tiHzZylNhvmXcYiLM2zNGmUXO5m1hfxGCD0zyg44r74XbXhi0govsIqM"; // Replace with your Pexels API key
             const url = "https://api.pexels.com/v1/curated?per_page=10";
 
             try {
